@@ -13,7 +13,7 @@ export default class Floor
         this.container.matrixAutoUpdate = false
 
         // Geometry
-        this.geometry = new THREE.PlaneBufferGeometry(2, 2, 10, 10)
+        this.geometry = new THREE.PlaneBufferGeometry(0, 0, 0, 0)
 
         // Colors
         this.colors = {}

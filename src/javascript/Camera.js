@@ -43,7 +43,7 @@ export default class Camera
 
         // Items
         this.angle.items = {
-            default: new THREE.Vector3(1.135, - 1.45, 1.15),
+            default: new THREE.Vector3(0, - 1., 1),
             projects: new THREE.Vector3(0.38, - 1.4, 1.63)
         }
 
@@ -62,13 +62,13 @@ export default class Camera
         }
 
         // Debug
-        if(this.debug)
-        {
-            this.debugFolder.add(this, 'easing').step(0.0001).min(0).max(1).name('easing')
-            this.debugFolder.add(this.angle.value, 'x').step(0.001).min(- 2).max(2).name('invertDirectionX').listen()
-            this.debugFolder.add(this.angle.value, 'y').step(0.001).min(- 2).max(2).name('invertDirectionY').listen()
-            this.debugFolder.add(this.angle.value, 'z').step(0.001).min(- 2).max(2).name('invertDirectionZ').listen()
-        }
+        // if(this.debug)
+        // {
+        //     this.debugFolder.add(this, 'easing').step(0.0001).min(0).max(1).name('easing')
+        //     this.debugFolder.add(this.angle.value, 'x').step(0.001).min(- 2).max(2).name('invertDirectionX').listen()
+        //     this.debugFolder.add(this.angle.value, 'y').step(0.001).min(- 2).max(2).name('invertDirectionY').listen()
+        //     this.debugFolder.add(this.angle.value, 'z').step(0.001).min(- 2).max(2).name('invertDirectionZ').listen()
+        // }
     }
 
     setInstance()
@@ -114,7 +114,7 @@ export default class Camera
         // Set up
         this.zoom = {}
         this.zoom.easing = 0.1
-        this.zoom.minDistance = 14
+        this.zoom.minDistance = 15
         this.zoom.amplitude = 15
         this.zoom.value = this.config.cyberTruck ? 0.3 : 0.5
         this.zoom.targetValue = this.zoom.value

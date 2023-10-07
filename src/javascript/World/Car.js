@@ -19,7 +19,7 @@ export default class Car
         this.camera = _options.camera
         this.debug = _options.debug
         this.config = _options.config
-
+        this.carT = _options.carT
         // Set up
         this.container = new THREE.Object3D()
         this.position = new THREE.Vector3()
@@ -27,7 +27,8 @@ export default class Car
         // Debug
         if(this.debug)
         {
-            this.debugFolder = this.debug.addFolder('car')
+            var a = Math.random(0,10);
+            this.debugFolder = this.debug.addFolder('car'+a)
             // this.debugFolder.open()
         }
 
@@ -38,7 +39,7 @@ export default class Car
         this.setBackLights()
         this.setWheels()
         this.setTransformControls()
-        this.setShootingBall()
+        // this.setShootingBall()
         this.setKlaxon()
     }
 
@@ -47,16 +48,13 @@ export default class Car
         this.models = {}
 
         // Cyber truck
-        if(this.config.cyberTruck)
-        {
+        if(this.carT){
             this.models.chassis = this.resources.items.carCyberTruckChassis
             this.models.antena = this.resources.items.carCyberTruckAntena
             this.models.backLightsBrake = this.resources.items.carCyberTruckBackLightsBrake
             this.models.backLightsReverse = this.resources.items.carCyberTruckBackLightsReverse
             this.models.wheel = this.resources.items.carCyberTruckWheel
         }
-
-        // Default
         else
         {
             this.models.chassis = this.resources.items.carDefaultChassis
@@ -67,6 +65,26 @@ export default class Car
             this.models.backLightsReverse = this.resources.items.carDefaultBackLightsReverse
             this.models.wheel = this.resources.items.carDefaultWheel
         }
+        // if(this.config.cyberTruck)
+        // {
+        //     this.models.chassis = this.resources.items.carCyberTruckChassis
+        //     this.models.antena = this.resources.items.carCyberTruckAntena
+        //     this.models.backLightsBrake = this.resources.items.carCyberTruckBackLightsBrake
+        //     this.models.backLightsReverse = this.resources.items.carCyberTruckBackLightsReverse
+        //     this.models.wheel = this.resources.items.carCyberTruckWheel
+        // }
+
+        // // Default
+        // else
+        // {
+        //     this.models.chassis = this.resources.items.carDefaultChassis
+        //     this.models.antena = this.resources.items.carDefaultAntena
+        //     // this.models.bunnyEarLeft = this.resources.items.carDefaultBunnyEarLeft
+        //     // this.models.bunnyEarRight = this.resources.items.carDefaultBunnyEarRight
+        //     this.models.backLightsBrake = this.resources.items.carDefaultBackLightsBrake
+        //     this.models.backLightsReverse = this.resources.items.carDefaultBackLightsReverse
+        //     this.models.wheel = this.resources.items.carDefaultWheel
+        // }
     }
 
     setMovement()
@@ -92,6 +110,8 @@ export default class Car
             // Sound
             this.sounds.engine.speed = this.movement.localSpeed.x
             this.sounds.engine.acceleration = this.controls.actions.up ? (this.controls.actions.boost ? 1 : 0.5) : 0
+            // this.sounds.engine.acceleration = this.physics.controls.actions.up ? (this.physics.controls.actions.boost ? 1 : 0.5) : 0
+
 
             if(this.movement.localAcceleration.x > 0.01)
             {
@@ -118,7 +138,7 @@ export default class Car
             this.chassis.oldPosition = this.chassis.object.position.clone()
 
             // Update if mode physics
-            if(!this.transformControls.enabled)
+            // if(!this.transformControls.enabled)
             {
                 this.chassis.object.position.copy(this.physics.car.chassis.body.position).add(this.chassis.offset)
                 this.chassis.object.quaternion.copy(this.physics.car.chassis.body.quaternion)
@@ -250,7 +270,7 @@ export default class Car
         // Time tick
         this.time.on('tick', () =>
         {
-            if(!this.transformControls.enabled)
+            // if(!this.transformControls.enabled)
             {
                 for(const _wheelKey in this.physics.car.wheels.bodies)
                 {
@@ -268,42 +288,42 @@ export default class Car
     {
         this.transformControls = new TransformControls(this.camera.instance, this.renderer.domElement)
         this.transformControls.size = 0.5
-        this.transformControls.attach(this.chassis.object)
+        // this.transformControls.attach(this.chassis.object)
         this.transformControls.enabled = false
         this.transformControls.visible = this.transformControls.enabled
 
-        document.addEventListener('keydown', (_event) =>
-        {
-            if(this.mode === 'transformControls')
-            {
-                if(_event.key === 'r')
-                {
-                    this.transformControls.setMode('rotate')
-                }
-                else if(_event.key === 'g')
-                {
-                    this.transformControls.setMode('translate')
-                }
-            }
-        })
+        // document.addEventListener('keydown', (_event) =>
+        // {
+        //     if(this.mode === 'transformControls')
+        //     {
+        //         if(_event.key === 'r')
+        //         {
+        //             this.transformControls.setMode('rotate')
+        //         }
+        //         else if(_event.key === 'g')
+        //         {
+        //             this.transformControls.setMode('translate')
+        //         }
+        //     }
+        // })
 
-        this.transformControls.addEventListener('dragging-changed', (_event) =>
-        {
-            this.camera.orbitControls.enabled = !_event.value
-        })
+        // this.transformControls.addEventListener('dragging-changed', (_event) =>
+        // {
+        //     this.camera.orbitControls.enabled = !_event.value
+        // })
 
-        this.container.add(this.transformControls)
+        // this.container.add(this.transformControls)
 
-        if(this.debug)
-        {
-            const folder = this.debugFolder.addFolder('controls')
-            folder.open()
+        // if(this.debug)
+        // {
+        //     const folder = this.debugFolder.addFolder('controls')
+        //     folder.open()
 
-            folder.add(this.transformControls, 'enabled').onChange(() =>
-            {
-                this.transformControls.visible = this.transformControls.enabled
-            })
-        }
+        //     folder.add(this.transformControls, 'enabled').onChange(() =>
+        //     {
+        //         this.transformControls.visible = this.transformControls.enabled
+        //     })
+        // }
     }
 
     setShootingBall()

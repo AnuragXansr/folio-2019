@@ -12,7 +12,7 @@ import Walls from './Walls.js'
 import IntroSection from './Sections/IntroSection.js'
 import ProjectsSection from './Sections/ProjectsSection.js'
 import CrossroadsSection from './Sections/CrossroadsSection.js'
-import InformationSection from './Sections/InformationSection.js'
+// import InformationSection from './Sections/InformationSection.js'
 import PlaygroundSection from './Sections/PlaygroundSection.js'
 // import DistinctionASection from './Sections/DistinctionASection.js'
 // import DistinctionBSection from './Sections/DistinctionBSection.js'
@@ -68,14 +68,16 @@ export default class
         this.setMaterials()
         this.setShadows()
         this.setPhysics()
-        this.setZones()
+        // this.setZones()
         this.setObjects()
         this.setCar()
-        this.areas.car = this.car
-        this.setTiles()
-        this.setWalls()
+
+        this.setCar1()
+        // this.areas.car = this.car1
+        // this.setTiles()
+        // this.setWalls()
         this.setSections()
-        this.setEasterEggs()
+        // this.setEasterEggs()
     }
 
     setReveal()
@@ -109,6 +111,14 @@ export default class
             window.setTimeout(() =>
             {
                 this.physics.car.chassis.body.wakeUp()
+            }, 300)
+
+            this.physics1.car.chassis.body.sleep()
+            this.physics1.car.chassis.body.position.set(0, 0, 12)
+
+            window.setTimeout(() =>
+            {
+                this.physics1.car.chassis.body.wakeUp()
             }, 300)
 
             // Sound
@@ -269,7 +279,16 @@ export default class
             sizes: this.sizes,
             time: this.time,
             camera: this.camera,
-            sounds: this.sounds
+            sounds: this.sounds,
+            tt: 0
+        })
+        this.controls1 = new Controls({
+            config: this.config,
+            sizes: this.sizes,
+            time: this.time,
+            camera: this.camera,
+            sounds: this.sounds,
+            tt: 1
         })
     }
 
@@ -313,13 +332,23 @@ export default class
         })
 
         this.container.add(this.physics.models.container)
+        this.physics1 = new Physics({
+            config: this.config,
+            debug: this.debug,
+            time: this.time,
+            sizes: this.sizes,
+            controls: this.controls1,
+            sounds: this.sounds
+        })
+
+        this.container.add(this.physics1.models.container)
     }
 
     setZones()
     {
         this.zones = new Zones({
             time: this.time,
-            physics: this.physics,
+            physics: this.physics1,
             debug: this.debugFolder
         })
         this.container.add(this.zones.container)
@@ -333,7 +362,7 @@ export default class
             debug: this.debug,
             renderer: this.renderer,
             camera: this.camera,
-            car: this.car,
+            car: this.car1,
             sounds: this.sounds,
             time: this.time
         })
@@ -371,6 +400,16 @@ export default class
         })
         this.container.add(this.objects.container)
 
+        this.objects1 = new Objects({
+            time: this.time,
+            resources: this.resources,
+            materials: this.materials,
+            physics: this.physics,
+            shadows: this.shadows,
+            sounds: this.sounds,
+            debug: this.debugFolder
+        })
+        this.container.add(this.objects1.container)
         // window.requestAnimationFrame(() =>
         // {
         //     this.objects.merge.update()
@@ -391,11 +430,31 @@ export default class
             renderer: this.renderer,
             camera: this.camera,
             debug: this.debugFolder,
-            config: this.config
+            config: this.config,
+            carT: false,
         })
         this.container.add(this.car.container)
-    }
 
+        
+    }
+    setCar1(){
+        this.car1 = new Car({
+            time: this.time,
+            resources: this.resources,
+            objects: this.objects1,
+            physics: this.physics,
+            shadows: this.shadows,
+            materials: this.materials,
+            controls: this.controls1,
+            sounds: this.sounds,
+            renderer: this.renderer,
+            camera: this.camera,
+            debug: this.debugFolder,
+            config: this.config,
+            carT: true,
+        })
+        this.container.add(this.car1.container)
+    }
     setSections()
     {
         this.sections = {}
@@ -456,56 +515,56 @@ export default class
         this.container.add(this.sections.intro.container)
 
         // Crossroads
-        this.sections.crossroads = new CrossroadsSection({
-            ...options,
-            x: 0,
-            y: - 30
-        })
-        this.container.add(this.sections.crossroads.container)
+        // this.sections.crossroads = new CrossroadsSection({
+        //     ...options,
+        //     x: 0,
+        //     y: - 30
+        // // })
+        // this.container.add(this.sections.crossroads.container)
 
         // Projects
-        this.sections.projects = new ProjectsSection({
-            ...options,
-            x: 30,
-            y: - 30
-            // x: 0,
-            // y: 0
-        })
-        this.container.add(this.sections.projects.container)
+        // this.sections.projects = new ProjectsSection({
+        //     ...options,
+        //     x: 30,
+        //     y: - 30
+        //     // x: 0,
+        //     // y: 0
+        // })
+        // this.container.add(this.sections.projects.container)
 
         // Information
-        this.sections.information = new InformationSection({
-            ...options,
-            x: 1.2,
-            y: - 55
-            // x: 0,
-            // y: - 10
-        })
-        this.container.add(this.sections.information.container)
+        // this.sections.information = new InformationSection({
+        //     ...options,
+        //     x: 1.2,
+        //     y: - 55
+        //     // x: 0,
+        //     // y: - 10
+        // })
+        // this.container.add(this.sections.information.container)
 
         // Playground
-        this.sections.playground = new PlaygroundSection({
-            ...options,
-            x: - 38,
-            y: - 34
-            // x: - 15,
-            // y: - 4
-        })
-        this.container.add(this.sections.playground.container)
+        // this.sections.playground = new PlaygroundSection({
+        //     ...options,
+        //     x: - 38,
+        //     y: - 34
+        //     // x: - 15,
+        //     // y: - 4
+        // })
+        // this.container.add(this.sections.playground.container)
     }
 
-    setEasterEggs()
-    {
-        this.easterEggs = new EasterEggs({
-            resources: this.resources,
-            car: this.car,
-            walls: this.walls,
-            objects: this.objects,
-            materials: this.materials,
-            areas: this.areas,
-            config: this.config,
-            physics: this.physics
-        })
-        this.container.add(this.easterEggs.container)
-    }
+    // setEasterEggs()
+    // {
+    //     this.easterEggs = new EasterEggs({
+    //         resources: this.resources,
+    //         car: this.car,
+    //         walls: this.walls,
+    //         objects: this.objects,
+    //         materials: this.materials,
+    //         areas: this.areas,
+    //         config: this.config,
+    //         physics: this.physics
+    //     })
+    //     this.container.add(this.easterEggs.container)
+    // }
 }

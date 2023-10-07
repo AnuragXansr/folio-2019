@@ -1,4 +1,4 @@
-import CANNON from 'cannon'
+import CANNON, { Vec3 } from 'cannon'
 import * as THREE from 'three'
 
 export default class Physics
@@ -92,13 +92,16 @@ export default class Physics
     {
         this.floor = {}
         this.floor.body = new CANNON.Body({
+            position: new Vec3(0,0,0),
             mass: 0,
             shape: new CANNON.Plane(),
             material: this.materials.items.floor
         })
+        // this.floor.body.sh = new Vec3(0,0,0);
+
 
         // this.floor.body.quaternion.setFromAxisAngle(new CANNON.Vec3(1, 0, 0), - Math.PI * 0.5)
-
+        // this.floor.scale = new Vec3(0,0,0);
         this.world.addBody(this.floor.body)
     }
 
